@@ -7,5 +7,4 @@
  */
 include_once "FrameWork\Core\Framework.class.php";
 
-//Framework::Run();
-echo getcwd();
+Framework::Run();

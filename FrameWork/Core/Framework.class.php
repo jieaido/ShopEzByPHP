@@ -22,7 +22,7 @@ class Framework{
 	/**
 	 *初始化方法
 	 */
-	protected function init()
+	protected static function init()
 	{
 		define("DS", DIRECTORY_SEPARATOR);
 		define("ROOT", getcwd() . DS); //根路径
@@ -43,8 +43,10 @@ class Framework{
 
 		//define("PLATFORM", isset($_GET['p']) ? $_GET['p'] : "admin" );
 		define("PLATFORM",isset($_GET['p'])?$_GET['p']:"Admin");
+        //设置默认的控制器为INDEX
 		define("CONTROLLER", isset($_GET['c']) ? ucfirst($_GET['c']) : "Index" );
-		define("ACTION", isset($_GET['a']) ? $_GET['a'] : "index" );
+        //设置默认动作为INDEX..呵呵.很牛逼啊
+		define("ACTION", isset($_GET['a']) ? $_GET['a'] : "Index" );
 		define("CUR_CONTROLLER_PATH", CONTROLLER_PATH . PLATFORM . DS );
 		define("CUR_VIEW_PATH", VIEW_PATH . PLATFORM . DS);
 
@@ -55,10 +57,10 @@ class Framework{
 	/**路由分发
 	 *
 	 */
-	protected function dispatch()
+	protected static function dispatch()
 	{
-		$controllername=CONTROLLER."controller";
-		$actionname=ACTION.'action';
+		$controllername=CONTROLLER."Controller";
+		$actionname=ACTION.'Action';
 		$controll=new $controllername;
 		$controll->$actionname();
 
@@ -68,8 +70,21 @@ class Framework{
 	/**
 	 *自动载入
 	 */
-	protected function autoload()
+	protected static function autoload()
 	{
+spl_autoload_register(array(__CLASS__,'load'));
+	}
 
+    private static function load($classname)
+    {
+        if(substr($classname,-10)=='Controller'){
+            include CUR_CONTROLLER_PATH."{$classname}.class.php";
+
+        }elseif(substr($classname,-5)=='Model')
+        {
+            include MODEL_PATH."{$classname}.class.php";
+        }else{
+
+        }
 	}
 }
