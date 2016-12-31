@@ -51,7 +51,6 @@ class Framework{
 		define("CUR_VIEW_PATH", VIEW_PATH . PLATFORM . DS);
 
 
-
 	}
 
 	/**路由分发
